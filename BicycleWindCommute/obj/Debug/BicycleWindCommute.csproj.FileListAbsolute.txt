@@ -1,0 +1,10 @@
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\bin\Debug\BicycleWindCommute.exe.config
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\bin\Debug\BicycleWindCommute.exe
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\bin\Debug\BicycleWindCommute.pdb
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\obj\Debug\BicycleWindCommute.csprojAssemblyReference.cache
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\obj\Debug\BicycleWindCommute.csproj.CoreCompileInputs.cache
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\obj\Debug\BicycleWindCommute.exe
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\obj\Debug\BicycleWindCommute.pdb
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\bin\Debug\Newtonsoft.Json.dll
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\bin\Debug\Newtonsoft.Json.xml
+C:\Users\EG\Documents\Visual Studio 2017\Projects\BicycleWindCommute\BicycleWindCommute\obj\Debug\BicycleWindCommute.csproj.CopyComplete
