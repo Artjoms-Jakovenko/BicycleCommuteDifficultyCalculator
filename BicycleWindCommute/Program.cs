@@ -13,8 +13,7 @@ namespace BicycleWindCommute
     {
         static void Main(string[] args)
         {
-            int rating = CommuteDifficultyCalculator.GetCommuteQualityRating("Richard Mortensens vej 54", "Frederiksberg", DateTime.Now.AddHours(74));
-            string ratingDescription = CommuteQualityPresentation.GetCommuteRatingDescription(rating);
+            CommuteQuality commuteQuality = CommuteQualityCalculator.GetCommuteQualityRating("Richard Mortensens vej 54", "Frederiksberg", DateTime.Now.AddHours(6));
         }
     }
 }

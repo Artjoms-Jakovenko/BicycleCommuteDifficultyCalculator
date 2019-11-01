@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BicycleWindCommute
 {
-    public static class CommuteDifficultyCalculator
+    public static class CommuteQualityCalculator
     {
-        public static int GetCommuteQualityRating(string startAddress, string destinationAddress, DateTime forecastTime)
+        public static CommuteQuality GetCommuteQualityRating(string startAddress, string destinationAddress, DateTime forecastTime)
         {
             GoogleMapsAPI googleMapsAPI = new GoogleMapsAPI(startAddress, destinationAddress);
             if(googleMapsAPI.GetPathDistance() > 100000) // > 100 km
@@ -21,15 +21,25 @@ namespace BicycleWindCommute
             // Wind direction is the direction wind comes from, therefore before doing vector calculations it needs to be rotated 180 degrees.
             double forecastWindVectorDirection = TrigonometryUtility.RotateAngle180(windForecastInstance.WindDirectionDegrees);
 
-            #region TOREWRITE
+            double windAngleDifference = TrigonometryUtility.GetDegreeBetweenVectors(pathDirection, forecastWindVectorDirection);
+            double windHelpMagnitude = TrigonometryUtility.DotProductWithUnitVector(windForecastInstance.windStrengthMps, windAngleDifference);
 
+            CommuteQuality commuteQuality = new CommuteQuality();
+            commuteQuality.Rating = new CommuteRating(CalculateHelpIndex(windHelpMagnitude));
+            commuteQuality.windPositiveWorkPercentage = GetPositiveWindWorkPercentage(googleMapsAPI, forecastWindVectorDirection);
+
+            return commuteQuality;
+        }
+
+        public static double GetPositiveWindWorkPercentage(GoogleMapsAPI googleMapsAPI, double forecastWindVectorDirection)
+        {
             int positiveWorkLength = 0;
             int negativeWorkLength = 0;
 
             foreach (Step step in googleMapsAPI.GetSteps())
             {
                 double windStepAngleDifference = TrigonometryUtility.GetDegreeBetweenVectors(googleMapsAPI.GetStepDirection(step), forecastWindVectorDirection);
-                if(Math.Cos(TrigonometryUtility.ToRadians(windStepAngleDifference)) > 0)
+                if (Math.Cos(TrigonometryUtility.ToRadians(windStepAngleDifference)) > 0)
                 {
                     positiveWorkLength += step.distance;
                 }
@@ -39,20 +49,8 @@ namespace BicycleWindCommute
                 }
             }
 
-            double positiveWindWorkPercentage = (double)positiveWorkLength / (positiveWorkLength + negativeWorkLength);
-
-            #endregion
-
-            double windAngleDifference = TrigonometryUtility.GetDegreeBetweenVectors(pathDirection, forecastWindVectorDirection);
-            double windHelpMagnitude = TrigonometryUtility.DotProductWithUnitVector(windForecastInstance.windStrengthMps, windAngleDifference);
-
-            return CalculateHelpIndex(windHelpMagnitude);
+            return (double)positiveWorkLength / (positiveWorkLength + negativeWorkLength);
         }
-
-        /*public static double GetPositiveWindWorkPercentage(List<Step> steps, double forecastWindVectorDirection)
-        {
-            
-        }*/
 
         public static int CalculateHelpIndex(double windHelpMagnitude)
         {
@@ -64,5 +62,22 @@ namespace BicycleWindCommute
             return 1.0f / (1.0f + Math.Exp(-value));
         }
 
+    }
+
+    public class CommuteQuality
+    {
+        public CommuteRating Rating;
+        public double windPositiveWorkPercentage;
+    }
+
+    public class CommuteRating
+    {
+        public CommuteRating(int rating)
+        {
+            this.rating = rating;
+            ratingDescription = CommuteQualityPresentation.GetCommuteRatingDescription(rating);
+        }
+        public int rating;
+        public string ratingDescription;
     }
 }

@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommuteDifficultyCalculator.cs" />
+    <Compile Include="CommuteQualityCalculator.cs" />
     <Compile Include="CommuteQualityPresentation.cs" />
     <Compile Include="GoogleMapsApi\GoogleMapsApiSerialization.cs" />
     <Compile Include="Utilities\TrigonometryUtility.cs" />
