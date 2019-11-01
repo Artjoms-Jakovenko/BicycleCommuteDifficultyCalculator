@@ -10,17 +10,17 @@ namespace BicycleWindCommute
     {
         private static Dictionary<int, string> CommuteRatingDescription = new Dictionary<int, string>()
         {
-            { 0, "You will cycle against a hurricane" },
-            { 1, "You will cycle against very strong wind" },
-            { 2, "You will cycle against strong wind" },
-            { 3, "Wind is moderately oppsoing you" },
-            { 4, "Wind is slightly opposing you" },
-            { 5, "Wind does not significantly affect your commute" },
-            { 6, "Wind slightly helps" },
-            { 7, "Wind is moderately helping" },
-            { 8, "Strong wind helps" },
-            { 9, "Very strong wind helps" },
-            { 10, "Hurricane will push you to your destination" },
+            { 0, "Dreadful - You will cycle against a hurricane" },
+            { 1, "Awful - You will cycle against very strong wind" },
+            { 2, "Bad - You will cycle against strong wind" },
+            { 3, "Poor - Wind is moderately opposing you" },
+            { 4, "Suboptimal - Wind is slightly opposing you" },
+            { 5, "Mediocre - Wind does not significantly affect your commute" },
+            { 6, "Decent - Wind slightly helps" },
+            { 7, "Good - Wind is moderately helping" },
+            { 8, "Great - Strong wind helps" },
+            { 9, "Excellent - Very strong wind helps" },
+            { 10, "Incredible - Hurricane will push you to your destination" },
         };
 
         public static string GetCommuteRatingDescription(int rating)

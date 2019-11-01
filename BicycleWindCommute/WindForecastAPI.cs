@@ -10,9 +10,14 @@ namespace BicycleWindCommute
     public static class WindForecastAPI
     {
 
-        public static List<WindForecastInstance> GetWindForecastInstances5Days3HourInterval()
+        public static List<WindForecastInstance> GetWindForecastInstances5Days3HourInterval(double latitude, double longitude)
         {
-            string jsonResponse = HttpRequestsUtility.Get("http://api.openweathermap.org/data/2.5/forecast?id=2618425&APPID=9fbb2cbde0201181c427ff24405bfdeb&units=metric"); // TODO changeable Location
+            StringBuilder urlRequest = new StringBuilder();
+            urlRequest.Append("http://api.openweathermap.org/data/2.5/forecast?");
+            urlRequest.Append($"lat={latitude}&lon={longitude}");
+            urlRequest.Append("&APPID=9fbb2cbde0201181c427ff24405bfdeb&units=metric");
+
+            string jsonResponse = HttpRequestsUtility.Get(urlRequest.ToString());
             JsonRoot forecast = JsonConvert.DeserializeObject<JsonRoot>(jsonResponse);
 
             if(forecast.httpReponseCode != "200")
@@ -35,7 +40,7 @@ namespace BicycleWindCommute
             return windForecastInstances;
         }
 
-        public static WindForecastInstance GetWindForecast(DateTime forecastTime)
+        public static WindForecastInstance GetWindForecast(double latitude, double longitude, DateTime forecastTime)
         {
             if(forecastTime < DateTime.Now.AddHours(-1) || forecastTime > DateTime.Now.AddDays(5))
             {
@@ -43,7 +48,7 @@ namespace BicycleWindCommute
                 return null;
             }
 
-            var windForecastInstances = GetWindForecastInstances5Days3HourInterval();
+            var windForecastInstances = GetWindForecastInstances5Days3HourInterval(latitude, longitude);
             if(windForecastInstances == null)
             {
                 Console.WriteLine("GetWindForecastInstances5Days3HourInterval returned null");

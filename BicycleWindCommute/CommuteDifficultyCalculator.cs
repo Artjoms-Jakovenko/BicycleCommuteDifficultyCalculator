@@ -8,17 +8,51 @@ namespace BicycleWindCommute
 {
     public static class CommuteDifficultyCalculator
     {
-        public static int GetCommuteQualityRating()
+        public static int GetCommuteQualityRating(string startAddress, string destinationAddress, DateTime forecastTime)
         {
-            double pathDirection = GoogleMapsAPI.GetPathDirection();
-            WindForecastInstance windForecastInstance = WindForecastAPI.GetWindForecast(DateTime.Now.AddHours(46));
+            GoogleMapsAPI googleMapsAPI = new GoogleMapsAPI(startAddress, destinationAddress);
+            if(googleMapsAPI.GetPathDistance() > 100000) // > 100 km
+            {
+                Console.WriteLine("Distance between addresses is too long. Results may be inaccurate.");
+            }
+            double pathDirection = googleMapsAPI.GetPathDirection();
+            WindForecastInstance windForecastInstance = WindForecastAPI.GetWindForecast(googleMapsAPI.GetMedianLatitude(), googleMapsAPI.GetMedianLongitude(), forecastTime);
 
             // Wind direction is the direction wind comes from, therefore before doing vector calculations it needs to be rotated 180 degrees.
-            double windAngleDifference = TrigonometryUtility.GetDegreeBetweenVectors(pathDirection, TrigonometryUtility.RotateAngle180(windForecastInstance.WindDirectionDegrees));
+            double forecastWindVectorDirection = TrigonometryUtility.RotateAngle180(windForecastInstance.WindDirectionDegrees);
+
+            #region TOREWRITE
+
+            int positiveWorkLength = 0;
+            int negativeWorkLength = 0;
+
+            foreach (Step step in googleMapsAPI.GetSteps())
+            {
+                double windStepAngleDifference = TrigonometryUtility.GetDegreeBetweenVectors(googleMapsAPI.GetStepDirection(step), forecastWindVectorDirection);
+                if(Math.Cos(TrigonometryUtility.ToRadians(windStepAngleDifference)) > 0)
+                {
+                    positiveWorkLength += step.distance;
+                }
+                else
+                {
+                    negativeWorkLength += step.distance;
+                }
+            }
+
+            double positiveWindWorkPercentage = (double)positiveWorkLength / (positiveWorkLength + negativeWorkLength);
+
+            #endregion
+
+            double windAngleDifference = TrigonometryUtility.GetDegreeBetweenVectors(pathDirection, forecastWindVectorDirection);
             double windHelpMagnitude = TrigonometryUtility.DotProductWithUnitVector(windForecastInstance.windStrengthMps, windAngleDifference);
 
             return CalculateHelpIndex(windHelpMagnitude);
         }
+
+        /*public static double GetPositiveWindWorkPercentage(List<Step> steps, double forecastWindVectorDirection)
+        {
+            
+        }*/
 
         public static int CalculateHelpIndex(double windHelpMagnitude)
         {

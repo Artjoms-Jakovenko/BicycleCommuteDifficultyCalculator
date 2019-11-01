@@ -48,10 +48,11 @@
   <ItemGroup>
     <Compile Include="CommuteDifficultyCalculator.cs" />
     <Compile Include="CommuteQualityPresentation.cs" />
-    <Compile Include="TrigonometryUtility.cs" />
-    <Compile Include="DateTimeUtility.cs" />
-    <Compile Include="GoogleMapsAPI.cs" />
-    <Compile Include="HttpRequestsUtility.cs" />
+    <Compile Include="GoogleMapsApi\GoogleMapsApiSerialization.cs" />
+    <Compile Include="Utilities\TrigonometryUtility.cs" />
+    <Compile Include="Utilities\DateTimeUtility.cs" />
+    <Compile Include="GoogleMapsApi\GoogleMapsAPI.cs" />
+    <Compile Include="Utilities\HttpRequestsUtility.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindForecastAPI.cs" />
@@ -60,5 +61,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
